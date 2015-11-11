@@ -1,4 +1,4 @@
-# fixrupr&nbsp;[![Build Status](https://travis-ci.org/verkestk/fixrupr.svg?branch=master)](https://travis-ci.org/verkestk/fixupr)&nbsp;[![godoc reference](https://godoc.org/github.com/verkestk/fixrupr?status.png)](https://godoc.org/github.com/verkestk/fixrupr)
+# fixrupr&nbsp;[![Build Status](https://travis-ci.org/verkestk/fixrupr.svg?branch=master)](https://travis-ci.org/verkestk/fixrupr)&nbsp;[![godoc reference](https://godoc.org/github.com/verkestk/fixrupr?status.png)](https://godoc.org/github.com/verkestk/fixrupr)
 
 Fixrupr is a golang mysql database seeder. Its primary use case is for setting up and tearing down test fixture data.
 
