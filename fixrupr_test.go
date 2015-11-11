@@ -28,7 +28,7 @@ func (s *MySuite) Test_New(c *C) {
 	configPath := s.help_mockFiles(c)
 	var conn *sql.DB
 
-	fi, err := New(conn, configPath)
+	fi, err := New(conn, configPath, "jamila")
 	c.Assert(fi, NotNil)
 	c.Assert(err, IsNil)
 	fs, ok := fi.(*fixr)
@@ -46,7 +46,7 @@ func (s *MySuite) Test_New(c *C) {
 
 func (s *MySuite) Test_fixr_SetUp(c *C) {
 	configPath := s.help_mockFiles(c)
-	fi, err := New(nil, configPath)
+	fi, err := New(nil, configPath, "jamila")
 	c.Assert(fi, NotNil)
 	c.Assert(err, IsNil)
 	fs, ok := fi.(*fixr)
@@ -60,7 +60,7 @@ func (s *MySuite) Test_fixr_SetUp(c *C) {
 
 func (s *MySuite) Test_fixr_TearDown(c *C) {
 	configPath := s.help_mockFiles(c)
-	fi, err := New(nil, configPath)
+	fi, err := New(nil, configPath, "jamila")
 	c.Assert(fi, NotNil)
 	c.Assert(err, IsNil)
 	fs, ok := fi.(*fixr)

@@ -56,8 +56,8 @@ func (f *fixr) drop() (err error) {
 		_, e := f.conn.Exec(query)
 		if e != nil {
 			err = newDbError(e, query, []interface{}{})
-		} else {
-			query = "update zombie.schemas set dropped = now() where name = ? and prefix = ?"
+		} else if f.schemaName != "" {
+			query = fmt.Sprintf("update `%s`.schemas set dropped = now() where name = ? and prefix = ?", f.schemaName)
 			_, e := f.conn.Exec(query, schema.name, f.prefix)
 			if e != nil {
 				err = newDbError(e, query, []interface{}{})
@@ -72,19 +72,23 @@ func (f *fixr) drop() (err error) {
 
 // creates a schema
 func (f *fixr) schema(name string) (err error) {
-	hostname, err := os.Hostname()
-	if err != nil {
-		hostname = "<unknown>"
-	}
-	query := "insert into zombie.schemas (name, prefix, hostname) values (?, ?, ?)"
+	if f.schemaName != "" {
+		var hostname string
+		hostname, err = os.Hostname()
+		if err != nil {
+			hostname = "<unknown>"
+			err = nil
+		}
+		query := fmt.Sprintf("insert into `%s`.schemas (name, prefix, hostname) values (?, ?, ?)", f.schemaName)
 
-	_, err = f.conn.Exec(query, name, f.prefix, hostname)
-	if err != nil {
-		err = newDbError(err, query, []interface{}{name, f.prefix, hostname})
-		return
+		_, err = f.conn.Exec(query, name, f.prefix, hostname)
+		if err != nil {
+			err = newDbError(err, query, []interface{}{name, f.prefix, hostname})
+			return
+		}
 	}
 
-	query = fmt.Sprintf("create schema `%s_%s`", f.prefix, name)
+	query := fmt.Sprintf("create schema `%s_%s`", f.prefix, name)
 
 	_, err = f.conn.Exec(query)
 	if err != nil {

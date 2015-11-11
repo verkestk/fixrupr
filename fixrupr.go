@@ -17,13 +17,17 @@ type Fixr interface {
 }
 
 type fixr struct {
-	conn   fixrConn
-	def    *fixrDef
-	prefix string
+	conn       fixrConn
+	def        *fixrDef
+	prefix     string
+	schemaName string
 }
 
 // New gets a new Fixr instance
-func New(conn *sql.DB, configPath string) (f Fixr, err error) {
+// conn: db connection
+// configPath: path to the directory containing the config file and the schema/data directories
+// schemaName (optional): schema to track set-ups/tear-downs
+func New(conn *sql.DB, configPath string, schemaName string) (f Fixr, err error) {
 	// parse config file
 	var (
 		conf = &fixrConf{}
@@ -44,9 +48,10 @@ func New(conn *sql.DB, configPath string) (f Fixr, err error) {
 	}
 
 	f = &fixr{
-		conn:   conn,
-		def:    def,
-		prefix: getPrefix(),
+		conn:       conn,
+		def:        def,
+		prefix:     getPrefix(),
+		schemaName: schemaName,
 	}
 
 	return

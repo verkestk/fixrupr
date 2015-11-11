@@ -32,9 +32,10 @@ func (s *MySuite) Test_fixr_create(c *C) {
 	hostname, _ := os.Hostname()
 	conn := &mockDb{}
 	fixr := &fixr{
-		conn:   conn,
-		def:    def,
-		prefix: "v_test",
+		conn:       conn,
+		def:        def,
+		prefix:     "v_test",
+		schemaName: "jamila",
 	}
 
 	err := fixr.create()
@@ -42,7 +43,7 @@ func (s *MySuite) Test_fixr_create(c *C) {
 	c.Assert(conn.queries, HasLen, 9)
 	c.Assert(conn.args, HasLen, 9)
 
-	c.Check(conn.queries[0], Equals, "insert into zombie.schemas (name, prefix, hostname) values (?, ?, ?)")
+	c.Check(conn.queries[0], Equals, "insert into `jamila`.schemas (name, prefix, hostname) values (?, ?, ?)")
 	c.Assert(conn.args[0], HasLen, 3)
 	c.Check(conn.args[0][0], Equals, "blog")
 	c.Check(conn.args[0][1], Equals, "v_test")
@@ -63,7 +64,7 @@ func (s *MySuite) Test_fixr_create(c *C) {
 	c.Check(conn.queries[5], Equals, "taqsim")
 	c.Check(conn.args[5], HasLen, 0)
 
-	c.Check(conn.queries[6], Equals, "insert into zombie.schemas (name, prefix, hostname) values (?, ?, ?)")
+	c.Check(conn.queries[6], Equals, "insert into `jamila`.schemas (name, prefix, hostname) values (?, ?, ?)")
 	c.Assert(conn.args[6], HasLen, 3)
 	c.Check(conn.args[6][0], Equals, "reporting")
 	c.Check(conn.args[6][1], Equals, "v_test")
@@ -85,9 +86,10 @@ func (s *MySuite) Test_fixr_drop(c *C) {
 	// hostname, _ := os.Hostname()
 	conn := &mockDb{}
 	fixr := &fixr{
-		conn:   conn,
-		def:    def,
-		prefix: "v_test",
+		conn:       conn,
+		def:        def,
+		prefix:     "v_test",
+		schemaName: "jamila",
 	}
 
 	err := fixr.drop()
@@ -98,7 +100,7 @@ func (s *MySuite) Test_fixr_drop(c *C) {
 	c.Check(conn.queries[0], Equals, "drop schema `v_test_blog`")
 	c.Check(conn.args[0], HasLen, 0)
 
-	c.Check(conn.queries[1], Equals, "update zombie.schemas set dropped = now() where name = ? and prefix = ?")
+	c.Check(conn.queries[1], Equals, "update `jamila`.schemas set dropped = now() where name = ? and prefix = ?")
 	c.Assert(conn.args[1], HasLen, 2)
 	c.Check(conn.args[1][0], Equals, "blog")
 	c.Check(conn.args[1][1], Equals, "v_test")
@@ -106,7 +108,7 @@ func (s *MySuite) Test_fixr_drop(c *C) {
 	c.Check(conn.queries[2], Equals, "drop schema `v_test_reporting`")
 	c.Check(conn.args[2], HasLen, 0)
 
-	c.Check(conn.queries[3], Equals, "update zombie.schemas set dropped = now() where name = ? and prefix = ?")
+	c.Check(conn.queries[3], Equals, "update `jamila`.schemas set dropped = now() where name = ? and prefix = ?")
 	c.Assert(conn.args[3], HasLen, 2)
 	c.Check(conn.args[3][0], Equals, "reporting")
 	c.Check(conn.args[3][1], Equals, "v_test")
@@ -121,9 +123,10 @@ func (s *MySuite) Test_fixr_insert(c *C) {
 	// hostname, _ := os.Hostname()
 	conn := &mockDb{}
 	fixr := &fixr{
-		conn:   conn,
-		def:    def,
-		prefix: "v_test",
+		conn:       conn,
+		def:        def,
+		prefix:     "v_test",
+		schemaName: "jamila",
 	}
 
 	err := fixr.insert()
