@@ -78,6 +78,10 @@ func (f *Fixr) TearDown() (err error) {
 	return
 }
 
+func (f *Fixr) GetPrefix() string {
+	return f.prefix
+}
+
 func getPrefix() string {
 	host, err := os.Hostname()
 	if err != nil {

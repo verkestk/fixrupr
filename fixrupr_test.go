@@ -63,6 +63,11 @@ func (s *MySuite) Test_fixr_TearDown(c *C) {
 	c.Check(err, IsNil)
 }
 
+func (s *MySuite) Test_fixr_GetPrefix(c *C) {
+	f := &Fixr{prefix: "this-is-my-prefix"}
+	c.Check(f.GetPrefix(), Equals, "this-is-my-prefix")
+}
+
 func (s *MySuite) help_mockFiles(c *C) (dir string) {
 	// make directories
 	dir = c.MkDir()
