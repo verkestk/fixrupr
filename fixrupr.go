@@ -10,12 +10,7 @@ import (
 	"time"
 )
 
-// // Fixr is the interface consuming packages use to interact with this package.
-// type Fixr interface {
-// 	SetUp() error
-// 	TearDown() error
-// }
-
+// Fixr does all the db setup and teardown.
 type Fixr struct {
 	conn       fixrConn
 	def        *fixrDef
@@ -78,6 +73,7 @@ func (f *Fixr) TearDown() (err error) {
 	return
 }
 
+// GetPrefix returns the prefix used - useful for making queries between SetUp and TearDown
 func (f *Fixr) GetPrefix() string {
 	return f.prefix
 }
