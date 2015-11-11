@@ -10,13 +10,13 @@ import (
 	"time"
 )
 
-// Fixr is the interface consuming packages use to interact with this package.
-type Fixr interface {
-	SetUp() error
-	TearDown() error
-}
+// // Fixr is the interface consuming packages use to interact with this package.
+// type Fixr interface {
+// 	SetUp() error
+// 	TearDown() error
+// }
 
-type fixr struct {
+type Fixr struct {
 	conn       fixrConn
 	def        *fixrDef
 	prefix     string
@@ -27,7 +27,7 @@ type fixr struct {
 // conn: db connection
 // configPath: path to the directory containing the config file and the schema/data directories
 // schemaName (optional): schema to track set-ups/tear-downs
-func New(conn *sql.DB, configPath string, schemaName string) (f Fixr, err error) {
+func New(conn *sql.DB, configPath string, schemaName string) (f *Fixr, err error) {
 	// parse config file
 	var (
 		conf = &fixrConf{}
@@ -47,7 +47,7 @@ func New(conn *sql.DB, configPath string, schemaName string) (f Fixr, err error)
 		return
 	}
 
-	f = &fixr{
+	f = &Fixr{
 		conn:       conn,
 		def:        def,
 		prefix:     getPrefix(),
@@ -59,7 +59,7 @@ func New(conn *sql.DB, configPath string, schemaName string) (f Fixr, err error)
 
 // SetUp sets up the database(s) - creates schemas, tables, and functions and
 // inserts rows.
-func (f *fixr) SetUp() (err error) {
+func (f *Fixr) SetUp() (err error) {
 	// create schema
 	err = f.create()
 	if err != nil {
@@ -72,7 +72,7 @@ func (f *fixr) SetUp() (err error) {
 }
 
 // TearDown tears down the database(s) - drops the databases created in SetUp.
-func (f *fixr) TearDown() (err error) {
+func (f *Fixr) TearDown() (err error) {
 	// drop schema
 	err = f.drop()
 	return

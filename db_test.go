@@ -31,7 +31,7 @@ func (s *MySuite) Test_fixr_create(c *C) {
 
 	hostname, _ := os.Hostname()
 	conn := &mockDb{}
-	fixr := &fixr{
+	fixr := &Fixr{
 		conn:       conn,
 		def:        def,
 		prefix:     "v_test",
@@ -85,7 +85,7 @@ func (s *MySuite) Test_fixr_drop(c *C) {
 
 	// hostname, _ := os.Hostname()
 	conn := &mockDb{}
-	fixr := &fixr{
+	fixr := &Fixr{
 		conn:       conn,
 		def:        def,
 		prefix:     "v_test",
@@ -122,7 +122,7 @@ func (s *MySuite) Test_fixr_insert(c *C) {
 
 	// hostname, _ := os.Hostname()
 	conn := &mockDb{}
-	fixr := &fixr{
+	fixr := &Fixr{
 		conn:       conn,
 		def:        def,
 		prefix:     "v_test",

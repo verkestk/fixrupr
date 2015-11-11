@@ -28,48 +28,38 @@ func (s *MySuite) Test_New(c *C) {
 	configPath := s.help_mockFiles(c)
 	var conn *sql.DB
 
-	fi, err := New(conn, configPath, "jamila")
-	c.Assert(fi, NotNil)
+	f, err := New(conn, configPath, "jamila")
+	c.Assert(f, NotNil)
 	c.Assert(err, IsNil)
-	fs, ok := fi.(*fixr)
-	c.Assert(fs, NotNil)
-	c.Assert(ok, Equals, true)
 
-	fConn, ok := fs.conn.(*sql.DB)
+	fConn, ok := f.conn.(*sql.DB)
 	c.Assert(ok, Equals, true)
 	c.Check(fConn, Equals, conn)
+	c.Check(f.def, NotNil)
 
-	c.Check(fs.def, NotNil)
-
-	c.Check(fs.prefix[0:2], Equals, "z_")
+	c.Check(f.prefix[0:2], Equals, "z_")
 }
 
 func (s *MySuite) Test_fixr_SetUp(c *C) {
 	configPath := s.help_mockFiles(c)
-	fi, err := New(nil, configPath, "jamila")
-	c.Assert(fi, NotNil)
+	f, err := New(nil, configPath, "jamila")
+	c.Assert(f, NotNil)
 	c.Assert(err, IsNil)
-	fs, ok := fi.(*fixr)
-	c.Assert(fs, NotNil)
-	c.Assert(ok, Equals, true)
-	fs.conn = &mockDb{}
+	f.conn = &mockDb{}
 
-	err = fi.SetUp()
+	err = f.SetUp()
 	c.Check(err, IsNil)
 }
 
 func (s *MySuite) Test_fixr_TearDown(c *C) {
 	configPath := s.help_mockFiles(c)
-	fi, err := New(nil, configPath, "jamila")
-	c.Assert(fi, NotNil)
+	f, err := New(nil, configPath, "jamila")
+	c.Assert(f, NotNil)
 	c.Assert(err, IsNil)
-	fs, ok := fi.(*fixr)
-	c.Assert(fs, NotNil)
-	c.Assert(ok, Equals, true)
-	fs.conn = &mockDb{}
+	f.conn = &mockDb{}
 
-	fi.SetUp()
-	err = fi.TearDown()
+	f.SetUp()
+	err = f.TearDown()
 	c.Check(err, IsNil)
 }
 

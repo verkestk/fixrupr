@@ -13,7 +13,7 @@ type fixrConn interface {
 }
 
 // creates all the schemas and tables and functions
-func (f *fixr) create() (err error) {
+func (f *Fixr) create() (err error) {
 	for _, schema := range f.def.schemas {
 		err = f.schema(schema.name)
 		if err != nil {
@@ -39,7 +39,7 @@ func (f *fixr) create() (err error) {
 }
 
 // inserts all the rows
-func (f *fixr) insert() (err error) {
+func (f *Fixr) insert() (err error) {
 	for _, d := range f.def.data {
 		err = f.load(f.prefix, d)
 		if err != nil {
@@ -50,7 +50,7 @@ func (f *fixr) insert() (err error) {
 }
 
 // drops all the schemas
-func (f *fixr) drop() (err error) {
+func (f *Fixr) drop() (err error) {
 	for _, schema := range f.def.schemas {
 		query := fmt.Sprintf("drop schema `%s_%s`", f.prefix, schema.name)
 		_, e := f.conn.Exec(query)
@@ -71,7 +71,7 @@ func (f *fixr) drop() (err error) {
 }
 
 // creates a schema
-func (f *fixr) schema(name string) (err error) {
+func (f *Fixr) schema(name string) (err error) {
 	if f.schemaName != "" {
 		var hostname string
 		hostname, err = os.Hostname()
@@ -98,17 +98,17 @@ func (f *fixr) schema(name string) (err error) {
 }
 
 // creates a table
-func (f *fixr) table(schema string, ddl string) (err error) {
+func (f *Fixr) table(schema string, ddl string) (err error) {
 	return f.exec(schema, ddl)
 }
 
 // creates a function
-func (f *fixr) function(schema string, ddl string) error {
+func (f *Fixr) function(schema string, ddl string) error {
 	return f.exec(schema, ddl)
 }
 
 // executes ddl
-func (f *fixr) exec(schema string, ddl string) (err error) {
+func (f *Fixr) exec(schema string, ddl string) (err error) {
 	query := strings.Replace(string(ddl), "{{schema}}", fmt.Sprintf("%s_%s", f.prefix, schema), -1)
 	_, err = f.conn.Exec(query)
 	if err != nil {
@@ -118,7 +118,7 @@ func (f *fixr) exec(schema string, ddl string) (err error) {
 }
 
 // inserts a group of rows
-func (f *fixr) load(prefix string, data fixrDataDef) (err error) {
+func (f *Fixr) load(prefix string, data fixrDataDef) (err error) {
 	if len(data.rows) == 0 {
 		return
 	}
