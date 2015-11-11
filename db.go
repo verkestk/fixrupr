@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -51,7 +52,7 @@ func (f *fixr) insert() (err error) {
 // drops all the schemas
 func (f *fixr) drop() (err error) {
 	for _, schema := range f.def.schemas {
-		query := fmt.Sprintf("drop schema %s_%s", f.prefix, schema.name)
+		query := fmt.Sprintf("drop schema `%s_%s`", f.prefix, schema.name)
 		_, e := f.conn.Exec(query)
 		if e != nil {
 			err = newDbError(e, query, []interface{}{})
@@ -83,7 +84,7 @@ func (f *fixr) schema(name string) (err error) {
 		return
 	}
 
-	query = fmt.Sprintf("create schema %s_%s", f.prefix, name)
+	query = fmt.Sprintf("create schema `%s_%s`", f.prefix, name)
 
 	_, err = f.conn.Exec(query)
 	if err != nil {
@@ -164,6 +165,10 @@ func getInsertFields(rows []map[string]fixrCellDef) []string {
 		fields = append(fields, fmt.Sprintf("`%s`", field))
 	}
 
+	// this sorting step is for testability only
+	// otherwise, the order of the fields is non-deterministic
+	// the insert will still work, but it's more difficult to test
+	sort.Strings(fields)
 	return fields
 }
 
@@ -175,9 +180,9 @@ func generateInsert(fields []string, row map[string]fixrCellDef) (values []strin
 	columns := map[string]fixrCellDef{}
 	for field, cellDef := range row {
 		if cellDef.column == "" {
-			columns[field] = cellDef
+			columns[fmt.Sprintf("`%s`", field)] = cellDef
 		} else {
-			columns[cellDef.column] = cellDef
+			columns[fmt.Sprintf("`%s`", cellDef.column)] = cellDef
 		}
 	}
 

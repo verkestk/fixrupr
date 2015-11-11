@@ -1,10 +1,6 @@
 package fixrupr
 
 import (
-	"fmt"
-	"io/ioutil"
-	"os"
-
 	. "gopkg.in/check.v1"
 )
 
@@ -81,41 +77,8 @@ var (
 )
 
 func (s *MySuite) Test_fixrConf_load(c *C) {
-	// make directories
-	dir := c.MkDir()
-	os.MkdirAll(fmt.Sprintf("%s/schema/blog/tables", dir), 0755)
-	os.MkdirAll(fmt.Sprintf("%s/schema/blog/functions", dir), 0755)
-	os.MkdirAll(fmt.Sprintf("%s/schema/reporting/tables", dir), 0755)
-	os.MkdirAll(fmt.Sprintf("%s/data", dir), 0755)
+	conf := s.mock_fixrConf(c)
 
-	// write files
-	configFile := fmt.Sprintf("%s/test.config.json", dir)
-	usersTableFile := fmt.Sprintf("%s/schema/blog/tables/users.sql", dir)
-	articlesTableFile := fmt.Sprintf("%s/schema/blog/tables/articles.sql", dir)
-	commentsTableFile := fmt.Sprintf("%s/schema/blog/tables/comments.sql", dir)
-	copyArticleFunctionFile := fmt.Sprintf("%s/schema/blog/functions/copy_article.sql", dir)
-	reportsTableFile := fmt.Sprintf("%s/schema/reporting/tables/reports.sql", dir)
-	usersDataFile := fmt.Sprintf("%s/data/blog.users.yml", dir)
-	articlesDataFile := fmt.Sprintf("%s/data/blog.articles.yml", dir)
-	comments1DataFile := fmt.Sprintf("%s/data/blog.comments.article1.yml", dir)
-	comments2DataFile := fmt.Sprintf("%s/data/blog.comments.article2.yml", dir)
-	reportsDataFile := fmt.Sprintf("%s/data/reporting.reports.yml", dir)
-
-	ioutil.WriteFile(configFile, []byte(configJson), 0755)
-	ioutil.WriteFile(usersTableFile, []byte("choo-choo"), 0755)
-	ioutil.WriteFile(articlesTableFile, []byte("egyptian"), 0755)
-	ioutil.WriteFile(commentsTableFile, []byte("turkish"), 0755)
-	ioutil.WriteFile(copyArticleFunctionFile, []byte("taqsim"), 0755)
-	ioutil.WriteFile(reportsTableFile, []byte("samiha"), 0755)
-	ioutil.WriteFile(usersDataFile, []byte(usersYaml), 0755)
-	ioutil.WriteFile(articlesDataFile, []byte(articlesYaml), 0755)
-	ioutil.WriteFile(comments1DataFile, []byte(comments1Yaml), 0755)
-	ioutil.WriteFile(comments2DataFile, []byte(comments2Yaml), 0755)
-	ioutil.WriteFile(reportsDataFile, []byte(reportsYaml), 0755)
-
-	conf, err := loadConfig(fmt.Sprintf("%s/test.config.json", dir))
-	c.Check(err, IsNil)
-	c.Assert(conf, NotNil)
 	c.Assert(conf.Schemas, HasLen, 2)
 	c.Check(conf.Schemas[0].Name, Equals, "blog")
 	c.Assert(conf.Schemas[0].Tables, HasLen, 3)
@@ -134,8 +97,6 @@ func (s *MySuite) Test_fixrConf_load(c *C) {
 	c.Check(conf.Data[2], Equals, "blog.comments.article1")
 	c.Check(conf.Data[3], Equals, "blog.comments.article2")
 	c.Check(conf.Data[4], Equals, "reporting.reports")
-
-	conf.path = dir
 
 	def, err := conf.load()
 	c.Check(err, IsNil)
