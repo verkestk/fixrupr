@@ -1,4 +1,4 @@
-// fixrupr provides a utility for setting up and tearing down mysql databases. It can be used to
+// Package fixrupr provides a utility for setting up and tearing down mysql databases. It can be used to
 // create a seed database or for test fixtures.
 package fixrupr
 

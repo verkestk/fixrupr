@@ -161,7 +161,7 @@ func getInsertFields(rows []map[string]fixrCellDef) []string {
 		}
 	}
 
-	for field, _ := range fieldMap {
+	for field := range fieldMap {
 		fields = append(fields, fmt.Sprintf("`%s`", field))
 	}
 

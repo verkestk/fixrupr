@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	configJson = `
+	configJSON = `
 {
   "schemas": [{
     "name": "blog",
@@ -33,7 +33,7 @@ var (
 }
 	`
 
-	usersYaml = `
+	usersYAML = `
 - id: 1
   username: maya
   joined: "2015-05-05"
@@ -42,7 +42,7 @@ var (
 
 `
 
-	articlesYaml = `
+	articlesYAML = `
 - id: 1
   title:
     column: article-title
@@ -51,7 +51,7 @@ var (
 
 `
 
-	comments1Yaml = `
+	comments1YAML = `
 - id: 1
   comment: cool!
   posted:
@@ -60,7 +60,7 @@ var (
 
 `
 
-	comments2Yaml = `
+	comments2YAML = `
 - id: 2
   comment:
     param: true
@@ -69,7 +69,7 @@ var (
 
 `
 
-	reportsYaml = `
+	reportsYAML = `
 - id: 1
   report: "now()"
 

@@ -94,17 +94,17 @@ func (s *MySuite) help_mockFiles(c *C) (dir string) {
 	comments2DataFile := fmt.Sprintf("%s/data/blog.comments.article2.yml", dir)
 	reportsDataFile := fmt.Sprintf("%s/data/reporting.reports.yml", dir)
 
-	ioutil.WriteFile(configFile, []byte(configJson), 0755)
+	ioutil.WriteFile(configFile, []byte(configJSON), 0755)
 	ioutil.WriteFile(usersTableFile, []byte("choo-choo"), 0755)
 	ioutil.WriteFile(articlesTableFile, []byte("egyptian"), 0755)
 	ioutil.WriteFile(commentsTableFile, []byte("turkish"), 0755)
 	ioutil.WriteFile(copyArticleFunctionFile, []byte("taqsim"), 0755)
 	ioutil.WriteFile(reportsTableFile, []byte("samiha"), 0755)
-	ioutil.WriteFile(usersDataFile, []byte(usersYaml), 0755)
-	ioutil.WriteFile(articlesDataFile, []byte(articlesYaml), 0755)
-	ioutil.WriteFile(comments1DataFile, []byte(comments1Yaml), 0755)
-	ioutil.WriteFile(comments2DataFile, []byte(comments2Yaml), 0755)
-	ioutil.WriteFile(reportsDataFile, []byte(reportsYaml), 0755)
+	ioutil.WriteFile(usersDataFile, []byte(usersYAML), 0755)
+	ioutil.WriteFile(articlesDataFile, []byte(articlesYAML), 0755)
+	ioutil.WriteFile(comments1DataFile, []byte(comments1YAML), 0755)
+	ioutil.WriteFile(comments2DataFile, []byte(comments2YAML), 0755)
+	ioutil.WriteFile(reportsDataFile, []byte(reportsYAML), 0755)
 
 	return
 }
